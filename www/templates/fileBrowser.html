@@ -1,0 +1,18 @@
+<ion-view view-title="Literaturas">
+  <ion-content>
+    <div class="list">
+      <div ng-repeat="file in files">
+        <a ng-show="file.isDirectory" class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
+          <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+          {{file.name}}
+        </a>
+      </div>
+      <div ng-repeat="file in files">
+        <a ng-show="file.isFile" class="item item-icon-left" href="#" ng-click="saveOpenFile(file.name, file.nativeURL)">
+          <i ng-show="file.isFile" class="icon ion-document"></i>
+          {{file.name}}
+        </a>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
