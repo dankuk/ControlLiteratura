@@ -199,7 +199,7 @@ angular.module('Util.servicios')
           var BASE_URL1 = getBaseUrl();
           var _url = BASE_URL1 + '/api/v1/node'+parametros;
         }else{
-          var _url = Url_base + '/api/v1/node'+parametros;
+          var _url = 'http://' + Url_base + '/api/v1/node'+parametros;
         }
         console.log("entra a CargaUnidades: " + Url_base);
         console.log("parametros: " + parametros);
@@ -242,7 +242,7 @@ angular.module('Util.servicios')
           var _url = BASE_URL1 + '/api/v1/node/'+nid;
         }else{
 
-          var _url = ruta + '/api/v1/node/'+nid;
+          var _url = 'http://' + ruta + '/api/v1/node/'+nid;
         }
         console.log("entra a _getSupervisores: " + ruta);
         console.log("nid: " + nid);

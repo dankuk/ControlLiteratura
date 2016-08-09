@@ -11,7 +11,7 @@ angular.module('Util.storage')
                 ||
                   (rutas_conf.email === undefined || rutas_conf.email === '')){
         var currentObject = {
-                              'path_literaturas': "Literaturas",
+                              'path_literaturas': "LITERATURAS_ESTRATEGICAS",
                               'ruta_servicios': "",
                               'unidad': "",
                               'supervisor': "",
@@ -139,7 +139,7 @@ angular.module('Util.storage')
       var _saveRutasConf = function(rutas,url,unidad,email,user,pass,nid_unidad,supervisor) {
         var currentObject = {
           'path_literaturas': rutas,
-          'ruta_servicios': url,
+          'ruta_servicios': "http://"+url,
           'unidad': unidad,
           'supervisor': supervisor,
           'nidUnidad': nid_unidad,

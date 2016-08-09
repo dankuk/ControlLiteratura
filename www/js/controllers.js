@@ -339,18 +339,38 @@ angular.module('starter.controllers', [])
         }, function (error) {
           console.log(error);
         });
-      fs.getEntries("file:///storage/sdcard1/"+ruta_de_literaturas).then(function(result) {
-        $scope.files = result;
-      }, function(error) {
-        console.log("ruta: "+ ruta_de_literaturas);
-        console.error(error);
-      });
+      $scope.versionDevice = device.version;
+      console.log("version de Android: " + $scope.versionDevice);
+      if($scope.versionDevice == "5.1.1"){
+        fs.getEntries("file:///storage/sdcard1/"+ruta_de_literaturas).then(function(result) {
+          $scope.files = result;
+        }, function(error) {
+          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.error(error);
+        });
+      }else if($scope.versionDevice == "4.0.4"){
+        fs.getEntries("file:///sdcard/"+ruta_de_literaturas).then(function(result) {
+          $scope.files = result;
+        }, function(error) {
+          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.error(error);
+        });
+      }else{
+        fs.getEntries("file:///").then(function(result) {
+          $scope.files = result;
+        }, function(error) {
+          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.error(error);
+        });
+      }
+
+
+
 
       $scope.getContents = function(path) {
         console.log("ruta de elemento:" + path);
         //obtener geolocalizacion para apertura de archivo
         var fecha =  new Date();
-        //file:///sdcard/Download/
         var path_conf = "file:///storage/sdcard1/"+ruta_de_literaturas+"/";
         console.log("path : "+path);
         console.log("actual : "+path_conf);
@@ -384,27 +404,31 @@ angular.module('starter.controllers', [])
           encuesta.then(function (response) {
             console.log("CONTROLLER / fileBrowserCtrl / Encuesta: ");
             console.log(response.data);
-            var nidEncuesta = response.data[0].nid;
-            console.log("CONTROLLER / fileBrowserCtrl / NID: " + nidEncuesta);
-            if (nidEncuesta > 0) {
-              var encuestaPublicada = createNode.getPreguntas(_url, nidEncuesta);
-              encuestaPublicada.then(function (response) {
-                console.log("CONTROLLER / fileBrowserCtrl / Preguntas: ");
-                console.log(response.data);
-                $scope.preguntas = response.data;
-                var frecuencia = $scope.preguntas.field_frecuencia.und[0].value;
-                if (frecuencia == 1) {
-                  console.log("CONTROLLER / fileBrowserCtrl / SIEMPRE / se redirecciona a la encuesta ");
-                  $state.go("app.creacionEncuesta");
-                } else if (frecuencia == 2) {
-                  console.log("CONTROLLER / fileBrowserCtrl / Aleatorio  ");
-                  var x = Math.floor((Math.random() * 5) + 1);
-                  if (x == frecuencia) {
-                    console.log("CONTROLLER / fileBrowserCtrl / Aleatorio / se cumple -> redirecciona  ");
+            if(response.data.length > 0) {
+              var nidEncuesta = response.data[0].nid;
+              console.log("CONTROLLER / fileBrowserCtrl / NID: " + nidEncuesta);
+              if (nidEncuesta > 0) {
+                var encuestaPublicada = createNode.getPreguntas(_url, nidEncuesta);
+                encuestaPublicada.then(function (response) {
+                  console.log("CONTROLLER / fileBrowserCtrl / Preguntas: ");
+                  console.log(response.data);
+                  $scope.preguntas = response.data;
+                  var frecuencia = $scope.preguntas.field_frecuencia.und[0].value;
+                  if (frecuencia == 1) {
+                    console.log("CONTROLLER / fileBrowserCtrl / SIEMPRE / se redirecciona a la encuesta ");
                     $state.go("app.creacionEncuesta");
+                  } else if (frecuencia == 2) {
+                    console.log("CONTROLLER / fileBrowserCtrl / Aleatorio  ");
+                    var x = Math.floor((Math.random() * 5) + 1);
+                    if (x == frecuencia) {
+                      console.log("CONTROLLER / fileBrowserCtrl / Aleatorio / se cumple -> redirecciona  ");
+                      $state.go("app.creacionEncuesta");
+                    }
                   }
-                }
-              });
+                });
+              }
+            }else{
+              console.warn("no hay encuesta disponible");
             }
           });
         }
@@ -419,6 +443,7 @@ angular.module('starter.controllers', [])
     }
 
     var revisarConfiguracion = function () {
+      console.warn("Se revisa si existe configuración");
       var url = storage.url();
       var unidad = storage.unidad();
       var supervisor = storage.super();
@@ -436,7 +461,7 @@ angular.module('starter.controllers', [])
         email = 1;
       }
 
-      if((unidad == 1) || (supervisor == 1) || (unidad == 1) || (email == 1)){
+      if((unidad == 1) || (supervisor == 1) || (url == 1) || (email == 1)){
         alert("No esta configurada la aplicación");
         goConfiguracionApp();
       }else{
@@ -447,6 +472,7 @@ angular.module('starter.controllers', [])
     $scope.$on( "$ionicView.enter", function( ) {
       var estado = revisarConfiguracion();
       if(estado == 0){
+        console.log("Existe configuración por lo que se procede");
         actualizarRegistroLiteratura();
         activarEncuesta();
       }
@@ -511,136 +537,141 @@ angular.module('starter.controllers', [])
       encuesta.then(function (response) {
         console.log("CONTROLLER / encuestaCtrl / Encuesta: ");
         console.log(response.data);
-        var nidEncuesta = response.data[0].nid;
-        console.log("CONTROLLER / encuestaCtrl / NID: " + nidEncuesta);
-        if(nidEncuesta > 0){
-          var encuestaPublicada = createNode.getPreguntas(_url,nidEncuesta);
-          encuestaPublicada.then(function (response) {
-            console.log("CONTROLLER / encuestaCtrl / Preguntas: ");
-            console.log(response.data);
-            $rootScope.preguntas = response.data;
-            $rootScope.nidEncuesta = nidEncuesta;
-            if($scope.preguntas.field_pregunta1.und) {
-              $rootScope.pregunta1 = $rootScope.preguntas.field_pregunta1.und[0].value;
-              if ($rootScope.preguntas.field_tipo_1.und[0].value == "p") {
-                $rootScope.tipoPreg1 = true;
-              } else if ($rootScope.preguntas.field_tipo_1.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta1.und) {
-                  $rootScope.tipoAlt1 = true;
-                  $rootScope.alternativas1 = $rootScope.preguntas.field_respuesta1.und[0].value.split("|");
+        if(response.data.length > 0) {
+          var nidEncuesta = response.data[0].nid;
+          console.log("CONTROLLER / encuestaCtrl / NID: " + nidEncuesta);
+          if (nidEncuesta > 0) {
+            var encuestaPublicada = createNode.getPreguntas(_url, nidEncuesta);
+            encuestaPublicada.then(function (response) {
+              console.log("CONTROLLER / encuestaCtrl / Preguntas: ");
+              console.log(response.data);
+              $rootScope.preguntas = response.data;
+              $rootScope.nidEncuesta = nidEncuesta;
+              if ($scope.preguntas.field_pregunta1.und) {
+                $rootScope.pregunta1 = $rootScope.preguntas.field_pregunta1.und[0].value;
+                if ($rootScope.preguntas.field_tipo_1.und[0].value == "p") {
+                  $rootScope.tipoPreg1 = true;
+                } else if ($rootScope.preguntas.field_tipo_1.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta1.und) {
+                    $rootScope.tipoAlt1 = true;
+                    $rootScope.alternativas1 = $rootScope.preguntas.field_respuesta1.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta2.und) {
-              $rootScope.pregunta2 = $rootScope.preguntas.field_pregunta2.und[0].value;
-              if ($rootScope.preguntas.field_tipo_2.und[0].value == "p") {
-                $rootScope.tipoPreg2 = true;
-              } else if ($rootScope.preguntas.field_tipo_2.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta2.und) {
-                  $rootScope.tipoAlt2 = true;
-                  $rootScope.alternativas2 = $rootScope.preguntas.field_respuesta2.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta2.und) {
+                $rootScope.pregunta2 = $rootScope.preguntas.field_pregunta2.und[0].value;
+                if ($rootScope.preguntas.field_tipo_2.und[0].value == "p") {
+                  $rootScope.tipoPreg2 = true;
+                } else if ($rootScope.preguntas.field_tipo_2.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta2.und) {
+                    $rootScope.tipoAlt2 = true;
+                    $rootScope.alternativas2 = $rootScope.preguntas.field_respuesta2.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta3.und) {
-              $rootScope.pregunta3 = $rootScope.preguntas.field_pregunta3.und[0].value;
-              if ($rootScope.preguntas.field_tipo_3.und[0].value == "p") {
-                $rootScope.tipoPreg3 = true;
-              } else if ($rootScope.preguntas.field_tipo_3.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta3.und) {
-                  $rootScope.tipoAlt3 = true;
-                  $rootScope.alternativas3 = $rootScope.preguntas.field_respuesta3.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta3.und) {
+                $rootScope.pregunta3 = $rootScope.preguntas.field_pregunta3.und[0].value;
+                if ($rootScope.preguntas.field_tipo_3.und[0].value == "p") {
+                  $rootScope.tipoPreg3 = true;
+                } else if ($rootScope.preguntas.field_tipo_3.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta3.und) {
+                    $rootScope.tipoAlt3 = true;
+                    $rootScope.alternativas3 = $rootScope.preguntas.field_respuesta3.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta4.und) {
-              $rootScope.pregunta4 = $rootScope.preguntas.field_pregunta4.und[0].value;
-              if ($rootScope.preguntas.field_tipo_4.und[0].value == "p") {
-                $rootScope.tipoPreg4 = true;
-              } else if ($rootScope.preguntas.field_tipo_4.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta4.und) {
-                  $rootScope.tipoAlt4 = true;
-                  $rootScope.alternativas4 = $rootScope.preguntas.field_respuesta4.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta4.und) {
+                $rootScope.pregunta4 = $rootScope.preguntas.field_pregunta4.und[0].value;
+                if ($rootScope.preguntas.field_tipo_4.und[0].value == "p") {
+                  $rootScope.tipoPreg4 = true;
+                } else if ($rootScope.preguntas.field_tipo_4.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta4.und) {
+                    $rootScope.tipoAlt4 = true;
+                    $rootScope.alternativas4 = $rootScope.preguntas.field_respuesta4.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta5.und) {
-              $rootScope.pregunta5 = $rootScope.preguntas.field_pregunta5.und[0].value;
-              if ($rootScope.preguntas.field_tipo_5.und[0].value == "p") {
-                $rootScope.tipoPreg5 = true;
-              } else if ($rootScope.preguntas.field_tipo_5.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta5.und) {
-                  $rootScope.tipoAlt5 = true;
-                  $rootScope.alternativas5 = $rootScope.preguntas.field_respuesta5.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta5.und) {
+                $rootScope.pregunta5 = $rootScope.preguntas.field_pregunta5.und[0].value;
+                if ($rootScope.preguntas.field_tipo_5.und[0].value == "p") {
+                  $rootScope.tipoPreg5 = true;
+                } else if ($rootScope.preguntas.field_tipo_5.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta5.und) {
+                    $rootScope.tipoAlt5 = true;
+                    $rootScope.alternativas5 = $rootScope.preguntas.field_respuesta5.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta6.und) {
-              $rootScope.pregunta6 = $rootScope.preguntas.field_pregunta6.und[0].value;
-              if ($rootScope.preguntas.field_tipo_6.und[0].value == "p") {
-                $rootScope.tipoPreg6 = true;
-              } else if ($rootScope.preguntas.field_tipo_6.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta6.und) {
-                  $rootScope.tipoAlt6 = true;
-                  $rootScope.alternativas6 = $rootScope.preguntas.field_respuesta6.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta6.und) {
+                $rootScope.pregunta6 = $rootScope.preguntas.field_pregunta6.und[0].value;
+                if ($rootScope.preguntas.field_tipo_6.und[0].value == "p") {
+                  $rootScope.tipoPreg6 = true;
+                } else if ($rootScope.preguntas.field_tipo_6.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta6.und) {
+                    $rootScope.tipoAlt6 = true;
+                    $rootScope.alternativas6 = $rootScope.preguntas.field_respuesta6.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta7.und) {
-              $rootScope.pregunta7 = $rootScope.preguntas.field_pregunta7.und[0].value;
-              if ($rootScope.preguntas.field_tipo_7.und[0].value == "p") {
-                $rootScope.tipoPreg7 = true;
-              } else if ($rootScope.preguntas.field_tipo_7.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta7.und) {
-                  $rootScope.tipoAlt7 = true;
-                  $rootScope.alternativas7 = $rootScope.preguntas.field_respuesta7.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta7.und) {
+                $rootScope.pregunta7 = $rootScope.preguntas.field_pregunta7.und[0].value;
+                if ($rootScope.preguntas.field_tipo_7.und[0].value == "p") {
+                  $rootScope.tipoPreg7 = true;
+                } else if ($rootScope.preguntas.field_tipo_7.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta7.und) {
+                    $rootScope.tipoAlt7 = true;
+                    $rootScope.alternativas7 = $rootScope.preguntas.field_respuesta7.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta8.und) {
-              $rootScope.pregunta8 = $rootScope.preguntas.field_pregunta8.und[0].value;
-              if ($rootScope.preguntas.field_tipo_8.und[0].value == "p") {
-                $rootScope.tipoPreg8 = true;
-              } else if ($rootScope.preguntas.field_tipo_8.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta8.und) {
-                  $rootScope.tipoAlt8 = true;
-                  $rootScope.alternativas8 = $rootScope.preguntas.field_respuesta8.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta8.und) {
+                $rootScope.pregunta8 = $rootScope.preguntas.field_pregunta8.und[0].value;
+                if ($rootScope.preguntas.field_tipo_8.und[0].value == "p") {
+                  $rootScope.tipoPreg8 = true;
+                } else if ($rootScope.preguntas.field_tipo_8.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta8.und) {
+                    $rootScope.tipoAlt8 = true;
+                    $rootScope.alternativas8 = $rootScope.preguntas.field_respuesta8.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta9.und) {
-              $rootScope.pregunta9 = $rootScope.preguntas.field_pregunta9.und[0].value;
-              if ($rootScope.preguntas.field_tipo_9.und[0].value == "p") {
-                $rootScope.tipoPreg9 = true;
-              } else if ($rootScope.preguntas.field_tipo_9.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta9.und) {
-                  $rootScope.tipoAlt9 = true;
-                  $rootScope.alternativas9 = $rootScope.preguntas.field_respuesta9.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta9.und) {
+                $rootScope.pregunta9 = $rootScope.preguntas.field_pregunta9.und[0].value;
+                if ($rootScope.preguntas.field_tipo_9.und[0].value == "p") {
+                  $rootScope.tipoPreg9 = true;
+                } else if ($rootScope.preguntas.field_tipo_9.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta9.und) {
+                    $rootScope.tipoAlt9 = true;
+                    $rootScope.alternativas9 = $rootScope.preguntas.field_respuesta9.und[0].value.split("|");
+                  }
                 }
               }
-            }
 
-            if($scope.preguntas.field_pregunta10.und) {
-              $rootScope.pregunta10 = $rootScope.preguntas.field_pregunta10.und[0].value;
-              if ($rootScope.preguntas.field_tipo_10.und[0].value == "p") {
-                $rootScope.tipoPreg10 = true;
-              } else if ($rootScope.preguntas.field_tipo_10.und[0].value == "a") {
-                if($rootScope.preguntas.field_respuesta10.und) {
-                  $rootScope.tipoAlt10 = true;
-                  $rootScope.alternativas10 = $rootScope.preguntas.field_respuesta10.und[0].value.split("|");
+              if ($scope.preguntas.field_pregunta10.und) {
+                $rootScope.pregunta10 = $rootScope.preguntas.field_pregunta10.und[0].value;
+                if ($rootScope.preguntas.field_tipo_10.und[0].value == "p") {
+                  $rootScope.tipoPreg10 = true;
+                } else if ($rootScope.preguntas.field_tipo_10.und[0].value == "a") {
+                  if ($rootScope.preguntas.field_respuesta10.und) {
+                    $rootScope.tipoAlt10 = true;
+                    $rootScope.alternativas10 = $rootScope.preguntas.field_respuesta10.und[0].value.split("|");
+                  }
                 }
               }
-            }
-            $state.go("app.encuesta");
-          });
+              $state.go("app.encuesta");
+            });
+          }
+        }else{
+          $rootScope.sinEncuesta = 1;
+          console.warn("No hay encuesta disponible");
         }
       });
     }
@@ -961,8 +992,24 @@ angular.module('starter.controllers', [])
       $scope.respuesta8 = "";
       $scope.respuesta9 = "";
       $scope.respuesta10 = "";
-
     })
+
+    var back = function(){
+      $state.go("app.fileBrowser");
+    }
+
+    $scope.$on( "$ionicView.enter", function( ) {
+      if($rootScope.sinEncuesta == 1){
+        navigator.notification.alert(
+          'No existen encuestas disponibles',  // message
+          back(),         // callback
+          'Aviso',            // title
+          'Ok'                  // buttonName
+        );
+      }
+    });
+
+
   })
 
 
