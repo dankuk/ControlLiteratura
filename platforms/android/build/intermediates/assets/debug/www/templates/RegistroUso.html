@@ -1,0 +1,15 @@
+<ion-view view-title="Registros de uso">
+  <ion-content ng-controller="ConsultaRegistroUso">
+    <div class="item-input-wrapper">
+      <input type="search"
+             placeholder="Buscar..."
+             ng-model="nombre_registro"
+             ng-change="scrollTop()">
+    </div>
+    <div class="list">
+      <div ng-repeat="reg in registros|filter:nombre_registro">
+        {{reg.id - reg.localizacion - reg.nombre_archivo - reg.fecha}}
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

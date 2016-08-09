@@ -1,0 +1,54 @@
+<ion-view view-title="Configuración">
+  <ion-content>
+    <h1>Configuración</h1>
+      <ul class="list">
+        <!--
+        <li class="item item-input item-stacked-label ">
+          <span class="input-label">Usuario</span>
+          <input type="text" placeholder="Indique se email de Tecnofarma..." ng-model="usuario">
+        </li>
+        <li class="item item-input item-stacked-label ">
+          <span class="input-label">Password</span>
+          <input type="text" placeholder="Indique se email de Tecnofarma..." ng-model="password">
+        </li>-->
+        <li class="item item-input item-stacked-label">
+          <span class="input-label">URL de Servicios</span>
+          <input type="text" placeholder="URL aqui..." ng-model="url_base" ng-blur="CargaUnidades()">
+        </li>
+        <li class="item item-input item-stacked-label">
+          <span class="input-label">Correo Electronico</span>
+          <input type="text" placeholder="Indique su email de Tecnofarma..." ng-model="email">
+        </li>
+        <div ng-if="url_base">
+          <li class="item item-input item-stacked-label">
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Unidad
+              </div>
+              <select  ng-model="uni_selected" ng-click="CargaUnidades()" ng-change="SeleccionUnidad()" >
+                <option ng-repeat="uni in unidades" value="{{uni.nid}}-{{uni.title}}">{{uni.title}}</option>
+              </select>
+            </label>
+          </li>
+          <li class="item item-input item-stacked-label" >
+            <label class="item item-input item-select">
+              <div class="input-label">
+                Supervisor
+              </div>
+              <select ng-model="super_selected" ng-change="SupervisorSeleccionado()">
+                <option ng-repeat="sup in supervisor" value="{{sup.value}}">{{sup.value}}</option>
+              </select>
+            </label>
+          </li>
+        </div>
+        <li class="item item-input item-stacked-label">
+          <span class="input-label">Ruta de literaturas</span>
+          <input type="text" placeholder="ruta aqui..." ng-model="path_literaturas">
+        </li>
+      </ul>
+      <button class="button button-block button-assertive" ng-click="saveConfig()">Guardar</button>
+    <div class="item item-divider-android">Configuración Actual:</div>
+    <label class="item">Unidad: {{unidad}}</label>
+    <label class="item">Supervisor: {{super_uni}}</label>
+  </ion-content>
+</ion-view>

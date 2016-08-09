@@ -1,0 +1,11 @@
+<ion-view view-title="Registros">
+  <ion-content>
+    {{mensaje}}
+
+    <div ng-repeat="reg in resultado">
+      <ul class="list">
+          <li>{{reg.id}} - {{reg.posicion}} - {{reg.archivo}} - {{reg.fecha}}</li>
+      </ul>
+    </div>
+  </ion-content>
+</ion-view>

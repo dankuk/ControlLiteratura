@@ -1,0 +1,219 @@
+<ion-view view-title="Encuesta">
+  <ion-content>
+    <h3>Encuesta</h3>
+    <div class="list">
+    <!--Estructura pregunta 1 -->
+      <!--Estructura tipo pregunta 1 -->
+      <label ng-if="tipoPreg1" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta1}}</span>
+        <input ng-if="tipoPreg1" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta1()" ng-model="respuesta1">
+      </label>
+      <!--FIN Estructura tipo pregunta 1 -->
+      <!--Estructura tipo Alterativa 1 -->
+      <label ng-if="tipoAlt1" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt1" class="input-label">{{pregunta1}}</span>
+      </label>
+      <label ng-if="tipoAlt1" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta1" ng-change="pushRespuesta1()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt1 in alternativas1" value="{{alt1}}">{{alt1}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 1 -->
+    <!--FIN Estructura pregunta 1 -->
+
+    <!--Estructura pregunta 2 -->
+    <!--Estructura tipo pregunta 2 -->
+      <label ng-if="tipoPreg2" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta2}}</span>
+        <input ng-if="tipoPreg2" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta2()" ng-model="respuesta2">
+      </label>
+    <!--FIN Estructura tipo pregunta 2 -->
+    <!--Estructura tipo Alterativa 2 -->
+      <label ng-if="tipoAlt2" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt2" class="input-label">{{pregunta2}}</span>
+      </label>
+      <label ng-if="tipoAlt2" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta2" ng-change="pushRespuesta2()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt2 in alternativas2" value="{{alt2}}">{{alt2}}</option>
+        </select>
+      </label>
+    <!--FIN Estructura tipo Alterativa 3 -->
+    <!--FIN Estructura pregunta 3 -->
+      <!--Estructura pregunta 3 -->
+      <!--Estructura tipo pregunta 3 -->
+      <label ng-if="tipoPreg3" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta3}}</span>
+        <input ng-if="tipoPreg3" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta3()" ng-model="respuesta3">
+      </label>
+      <!--FIN Estructura tipo pregunta 3 -->
+      <!--Estructura tipo Alterativa 3 -->
+      <label ng-if="tipoAlt3" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt3" class="input-label">{{pregunta3}}</span>
+      </label>
+      <label ng-if="tipoAlt3" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta3" ng-change="pushRespuesta3()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt3 in alternativas3" value="{{alt3}}">{{alt3}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 3 -->
+      <!--FIN Estructura pregunta 3 -->
+
+      <!--Estructura pregunta 4 -->
+      <!--Estructura tipo pregunta 4 -->
+      <label ng-if="tipoPreg4" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta4}}</span>
+        <input ng-if="tipoPreg4" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta4()" ng-model="respuesta4">
+      </label>
+      <!--FIN Estructura tipo pregunta 4 -->
+      <!--Estructura tipo Alterativa 4 -->
+      <label ng-if="tipoAlt4" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt4" class="input-label">{{pregunta4}}</span>
+      </label>
+      <label ng-if="tipoAlt4" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta4" ng-change="pushRespuesta4()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt4 in alternativas4" value="{{alt4}}">{{alt4}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 4 -->
+      <!--FIN Estructura pregunta 4 -->
+
+      <!--Estructura pregunta 5 -->
+      <!--Estructura tipo pregunta 5 -->
+      <label ng-if="tipoPreg5" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta5}}</span>
+        <input ng-if="tipoPreg5" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta5()" ng-model="respuesta5">
+      </label>
+      <!--FIN Estructura tipo pregunta 5 -->
+      <!--Estructura tipo Alterativa 5 -->
+      <label ng-if="tipoAlt5" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt5" class="input-label">{{pregunta5}}</span>
+      </label>
+      <label ng-if="tipoAlt5" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta5" ng-change="pushRespuesta5()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt5 in alternativas5" value="{{alt5}}">{{alt5}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 5 -->
+      <!--FIN Estructura pregunta 5 -->
+
+      <!--Estructura pregunta 6 -->
+      <!--Estructura tipo pregunta 6 -->
+      <label ng-if="tipoPreg6" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta6}}</span>
+        <input ng-if="tipoPreg6" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta6()" ng-model="respuesta6">
+      </label>
+      <!--FIN Estructura tipo pregunta 6 -->
+      <!--Estructura tipo Alterativa 6 -->
+      <label ng-if="tipoAlt6" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt6" class="input-label">{{pregunta6}}</span>
+      </label>
+      <label ng-if="tipoAlt6" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta6" ng-change="pushRespuesta6()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt6 in alternativas6" value="{{alt6}}">{{alt6}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 6 -->
+      <!--FIN Estructura pregunta 6 -->
+
+      <!--Estructura pregunta 7 -->
+      <!--Estructura tipo pregunta 7 -->
+      <label ng-if="tipoPreg7" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta7}}</span>
+        <input ng-if="tipoPreg7" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta7()" ng-model="respuesta7">
+      </label>
+      <!--FIN Estructura tipo pregunta 7 -->
+      <!--Estructura tipo Alterativa 7 -->
+      <label ng-if="tipoAlt7" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt7" class="input-label">{{pregunta7}}</span>
+      </label>
+      <label ng-if="tipoAlt7" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta7" ng-change="pushRespuesta7()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt7 in alternativas7" value="{{alt7}}">{{alt7}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 7 -->
+      <!--FIN Estructura pregunta 7 -->
+
+      <!--Estructura pregunta 8 -->
+      <!--Estructura tipo pregunta 8 -->
+      <label ng-if="tipoPreg8" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta8}}</span>
+        <input ng-if="tipoPreg8" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta8()" ng-model="respuesta8">
+      </label>
+      <!--FIN Estructura tipo pregunta 8 -->
+      <!--Estructura tipo Alterativa 8 -->
+      <label ng-if="tipoAlt8" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt8" class="input-label">{{pregunta8}}</span>
+      </label>
+      <label ng-if="tipoAlt8" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta8" ng-change="pushRespuesta8()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt8 in alternativas8" value="{{alt8}}">{{alt8}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 8 -->
+      <!--FIN Estructura pregunta 8 -->
+
+      <!--Estructura pregunta 9 -->
+      <!--Estructura tipo pregunta 9 -->
+      <label ng-if="tipoPreg9" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta9}}</span>
+        <input ng-if="tipoPreg9" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta9()" ng-model="respuesta9">
+      </label>
+      <!--FIN Estructura tipo pregunta 9 -->
+      <!--Estructura tipo Alterativa 9 -->
+      <label ng-if="tipoAlt9" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt9" class="input-label">{{pregunta9}}</span>
+      </label>
+      <label ng-if="tipoAlt9" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta9" ng-change="pushRespuesta9()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt9 in alternativas9" value="{{alt9}}">{{alt9}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 9 -->
+      <!--FIN Estructura pregunta 9 -->
+
+      <!--Estructura pregunta 10 -->
+      <!--Estructura tipo pregunta 10 -->
+      <label ng-if="tipoPreg10" class="item item-input item-stacked-label">
+        <span class="input-label">{{pregunta10}}</span>
+        <input ng-if="tipoPreg10" type="text" placeholder="Escriba su respuesta aquí" ng-change="pushRespuesta10()" ng-model="respuesta10">
+      </label>
+      <!--FIN Estructura tipo pregunta 10 -->
+      <!--Estructura tipo Alterativa 10 -->
+      <label ng-if="tipoAlt10" class="item item-input item-stacked-label">
+        <span ng-if="tipoAlt10" class="input-label">{{pregunta10}}</span>
+      </label>
+      <label ng-if="tipoAlt10" class="item item-input item-select">
+        <br>
+        <select ng-model="respuesta10" ng-change="pushRespuesta10()">
+          <option value="">Seleccione Alternativa</option>
+          <option ng-repeat="alt10 in alternativas10" value="{{alt10}}">{{alt10}}</option>
+        </select>
+      </label>
+      <!--FIN Estructura tipo Alterativa 10 -->
+      <!--FIN Estructura pregunta 10 -->
+
+    </div>
+    <div class="padding">
+      <button class="button button-block button-positive" ng-click="createEncuesta()">Aceptar</button>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\ionic\Control\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="C:\ionic\Control\platforms\android\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.1.1_2ee3dd5ca41d8995287733224ee5fb640f8574ac.jar" />
+    </item>
+    <item
+        jar="C:\Users\dcanales\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\24.1.1\3af19f153122737b372622fa6c81dd11a1c6b999\support-annotations-24.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="C:\ionic\Control\platforms\android\build\intermediates\pre-dexed\debug\support-annotations-24.1.1_a101bd93b827f168da025dd63a2da2ad0e91668a.jar" />
+    </item>
+    <item
+        jar="C:\ionic\Control\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="C:\ionic\Control\platforms\android\build\intermediates\pre-dexed\debug\internal_impl-24.1.1_9e5eef2cc41cf55d0e9c3ee268ea48cb21c10ece.jar" />
+    </item>
+    <item
+        jar="C:\ionic\Control\platforms\android\libs\sqlite-connector.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="76169ab23a4f939925491c6fe186749da5a56ee9">
+        <dex dex="C:\ionic\Control\platforms\android\build\intermediates\pre-dexed\debug\sqlite-connector_e73f70be6b4aea233a241da5347ff670e223adc0.jar" />
+    </item>
+    <item
+        jar="C:\ionic\Control\platforms\android\build\intermediates\exploded-aar\android\CordovaLib\unspecified\debug\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="87307383aa607e75f7225959baf63b5cf1b7e4b2">
+        <dex dex="C:\ionic\Control\platforms\android\build\intermediates\pre-dexed\debug\CordovaLib-unspecified-debug_0264bbd148ba094667813f80adaade778eb10174.jar" />
+    </item>
+
+</items>
