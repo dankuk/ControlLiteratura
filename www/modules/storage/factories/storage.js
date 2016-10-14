@@ -139,7 +139,7 @@ angular.module('Util.storage')
       var _saveRutasConf = function(rutas,url,unidad,email,user,pass,nid_unidad,supervisor) {
         var currentObject = {
           'path_literaturas': rutas,
-          'ruta_servicios': "http://"+url,
+          'ruta_servicios': url,
           'unidad': unidad,
           'supervisor': supervisor,
           'nidUnidad': nid_unidad,

@@ -5,7 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Util.file', 'ngCordova', 'Util.Query', 'Util.storage'])
-
+.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
+})
 .run(function($ionicPlatform, $cordovaSQLite,storage,createNode) {
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -42,38 +44,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Ut
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
+    templateUrl: 'templates/tabs.html'
   })
 
   .state('app.creacionEncuesta', {
-    url: '/creacion-encuestas',
+    url: '/creacionEncuesta',
     views: {
-      'menuContent': {
+      'app-creacionEncuesta': {
+        templateUrl: 'templates/creacionEncuesta.html',
         controller: 'creacionEncuestaCtrl'
       }
     }
   })
 
   .state('app.encuesta', {
-    url: '/encuestas',
+    url: '/encuesta',
     views: {
-      'menuContent': {
+      'app-encuesta': {
         templateUrl: 'templates/encuesta.html',
         controller: 'encuestaCtrl'
       }
     }
   })
 
-
-
   .state('app.fileBrowser', {
     url: '/fileBrowser',
     views: {
-      'menuContent': {
+      'app-fileBrowser': {
         templateUrl: 'templates/fileBrowser.html',
         controller: 'fileBrowserCtrl'
       }
@@ -83,7 +83,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Ut
   .state('app.configuracion', {
     url: '/configuracion',
     views: {
-      'menuContent': {
+      'app-configuracion': {
         templateUrl: 'templates/configuracion.html',
         controller: 'configuracionCtrl'
       }
@@ -93,7 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Ut
   .state('app.registros', {
     url: '/registros',
     views: {
-      'menuContent': {
+      'app-registros': {
         templateUrl: 'templates/Registros.html',
         controller: 'registrosCtrl'
       }
@@ -103,7 +103,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Ut
   .state('app.file', {
     url: '/file/:playlistId',
     views: {
-      'menuContent': {
+      'app-dash': {
         templateUrl: 'templates/file.html',
         controller: 'fileCtrl'
       }
@@ -112,6 +112,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'Util.servicios', 'Ut
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/fileBrowser');
 })
+
+
 
 
 

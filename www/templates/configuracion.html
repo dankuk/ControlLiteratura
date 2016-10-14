@@ -26,7 +26,7 @@
                 Unidad
               </div>
               <select  ng-model="uni_selected" ng-click="CargaUnidades()" ng-change="SeleccionUnidad()" >
-                <option ng-repeat="uni in unidades" value="{{uni.nid}}-{{uni.title}}">{{uni.title}}</option>
+                <option ng-repeat="uni in unidades" value="{{uni.nid}}_{{uni.title}}">{{uni.title}}</option>
               </select>
             </label>
           </li>

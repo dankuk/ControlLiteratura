@@ -10,6 +10,14 @@ angular.module('starter.controllers', [])
     $scope.CargaUnidades = function() {
       var form = this;
       var parametros = "?parameters[type]=unidades";
+
+      if (form.url_base.indexOf('http') == -1) {
+        console.warn("no tiene http");
+        form.url_base = 'http://' + form.url_base;
+      }else if(form.url_base.indexOf('http') >= 0){
+        console.warn("si tiene http");
+      }
+
       if(form.url_base != "") {
         var url = form.url_base;
       }else if($scope.url_plataforma != ""){
@@ -45,20 +53,28 @@ angular.module('starter.controllers', [])
         nid_unidad_seleccionada = $scope.nidUni;
         unidad_seleccionada = $scope.unidad;
       }else{
-        var unidad_split = form.uni_selected.split("-");
+        var unidad_split = form.uni_selected.split("_");
         nid_unidad_seleccionada = unidad_split[0];
         unidad_seleccionada = unidad_split[1];
       }
       if(nid_unidad_seleccionada != "nada" && unidad_seleccionada != "nada"){
-        var txt_aux = nid_unidad_seleccionada+"-"+unidad_seleccionada;
+        var txt_aux = nid_unidad_seleccionada+"_"+unidad_seleccionada;
         console.log('Unidad Seleccionada: ' + txt_aux);
-        var unidad = txt_aux.split("-");
+        var unidad = txt_aux.split("_");
         $scope.nidUni = unidad[0];
         $scope.unidad = unidad[1];
         console.warn("Unidad split");
         console.warn(unidad);
         if(unidad[0] != "") {
           console.log("Nid de unidad: " + unidad[0]);
+
+          if (form.url_base.indexOf('http') == -1) {
+            console.warn("no tiene http");
+            form.url_base = 'http://' + form.url_base;
+          }else if(form.url_base.indexOf('http') >= 0){
+            console.warn("si tiene http");
+          }
+
           var supervisor = createNode.getSupervisores(form.url_base, unidad[0]);
           supervisor.then(function (response) {
             console.log("Supervisor: ");
@@ -105,15 +121,29 @@ angular.module('starter.controllers', [])
 
       if(form.url_base === undefined || form.url_base === ''){
         form.url_base = $scope.url_base;
-      }else{console.log('url a guardar: ' + form.url_base);}
+        if (form.url_base.indexOf('http') == -1) {
+          console.warn("no tiene http");
+          form.url_base = 'http://' + form.url_base;
+        }else if(form.url_base.indexOf('http') >= 0){
+          console.warn("si tiene http");
+        }
+      }else{
+        if (form.url_base.indexOf('http') == -1) {
+          console.warn("no tiene http");
+          form.url_base = 'http://' + form.url_base;
+        }else if(form.url_base.indexOf('http') >= 0){
+          console.warn("si tiene http");
+        }
+        console.log('url a guardar: ' + form.url_base);
+      }
 
       if($scope.nidUni === undefined || $scope.unidad === ''){
-        var unidad = form.uni_selected.split("-");
+        var unidad = form.uni_selected.split("_");
         console.warn("Unidad split no definida: "+ unidad);
       }else{
-        console.log('Unidad Seleccionada: ' + $scope.nidUni + "-" + $scope.unidad);
-        var aux = $scope.nidUni + "-" + $scope.unidad;
-        var unidad = aux.split("-");
+        console.log('Unidad Seleccionada: ' + $scope.nidUni + "_" + $scope.unidad);
+        var aux = $scope.nidUni + "_" + $scope.unidad;
+        var unidad = aux.split("_");
         console.warn("Unidad split: " + unidad);
       }
 
@@ -132,6 +162,7 @@ angular.module('starter.controllers', [])
       }
 
       storage.saveRutasConf(form.path_literaturas,form.url_base,unidad[1],form.email,form.usuario,form.password,unidad[0],supervisor);
+      storage.deleteLocalStorageForKey("encuesta");
       navigator.notification.alert(
         'Configuración guardada!',  // message
         goFilebrowser,         // callback
@@ -143,7 +174,7 @@ angular.module('starter.controllers', [])
   })
 
 //Ccntrolador para gestor de archivos
-  .controller('fileBrowserCtrl', function($scope, $cordovaSQLite, Query, $fileFactory, $ionicPlatform,$cordovaFile,storage,createNode,$state) {
+  .controller('fileBrowserCtrl', function($scope, $cordovaSQLite, Query, $fileFactory, $ionicPlatform,$cordovaFile,storage,createNode,$state ,$rootScope ) {
     console.log("Ingreso a fileBrowserCtrl");
     navigator.geolocation.getCurrentPosition(function(position){
       $scope.geo = position.coords.latitude + "," + position.coords.longitude;
@@ -321,6 +352,7 @@ angular.module('starter.controllers', [])
     var fs = new $fileFactory();
 
     $ionicPlatform.ready(function() {
+      storage.deleteLocalStorageForKey("encuesta");
       setInterval(function(){ storage.deleteLocalStorageForKey("encuesta") }, 1800000);
       setInterval(function(){ activarEncuesta() }, 1860000);
       navigator.geolocation.getCurrentPosition(function(position){
@@ -345,21 +377,21 @@ angular.module('starter.controllers', [])
         fs.getEntries("file:///storage/sdcard1/"+ruta_de_literaturas).then(function(result) {
           $scope.files = result;
         }, function(error) {
-          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.log("controller.js / ready / getEntries / ruta: file:///storage/sdcard1/"+ ruta_de_literaturas);
           console.error(error);
         });
-      }else if($scope.versionDevice == "4.0.4"){
+      }else if(($scope.versionDevice == "4.0.4") || ($scope.versionDevice == "4.4.4")){
         fs.getEntries("file:///sdcard/"+ruta_de_literaturas).then(function(result) {
           $scope.files = result;
         }, function(error) {
-          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.log("controller.js / ready / getEntries / ruta: file:///sdcard/"+ ruta_de_literaturas);
           console.error(error);
         });
       }else{
         fs.getEntries("file:///").then(function(result) {
           $scope.files = result;
         }, function(error) {
-          console.log("controller.js / ready / getEntries / ruta: "+ ruta_de_literaturas);
+          console.log("controller.js / ready / getEntries / ruta: file:///" + ruta_de_literaturas);
           console.error(error);
         });
       }
@@ -394,11 +426,13 @@ angular.module('starter.controllers', [])
     var activarEncuesta = function (){
       console.log("CONTROLLER / fileBrowserCtrl / se verifica si existe encuesta a responder");
       var _unidad = storage.unidad();
+      console.log("CONTROLLER / fileBrowserCtrl / unidad : " + _unidad);
       var _url = storage.url();
+      console.log("CONTROLLER / fileBrowserCtrl / url : " + _url);
       var verificarEncuestaRespondida = storage.verificarEncuestaRespondida();
       console.log("CONTROLLER / fileBrowserCtrl / ON / verificarEncuestaRespondida: " + verificarEncuestaRespondida );
       if(verificarEncuestaRespondida == false) { // no hay respondia encuesta anterior
-        console.log("CONTROLLER / fileBrowserCtrl / ON / No existe encuesta");
+        console.log("CONTROLLER / fileBrowserCtrl / ON / No existe encuesta respondida anterior");
         if (_url != "nada") {
           var encuesta = createNode.getEncuesta(_url, _unidad);
           encuesta.then(function (response) {
@@ -418,8 +452,9 @@ angular.module('starter.controllers', [])
                     console.log("CONTROLLER / fileBrowserCtrl / SIEMPRE / se redirecciona a la encuesta ");
                     $state.go("app.creacionEncuesta");
                   } else if (frecuencia == 2) {
-                    console.log("CONTROLLER / fileBrowserCtrl / Aleatorio  ");
-                    var x = Math.floor((Math.random() * 5) + 1);
+
+                    var x = Math.floor((Math.random() * 3) + 1);
+                    console.log("CONTROLLER / fileBrowserCtrl / Aleatorio / Frecuencia / " + frecuencia + " / generado: " + x);
                     if (x == frecuencia) {
                       console.log("CONTROLLER / fileBrowserCtrl / Aleatorio / se cumple -> redirecciona  ");
                       $state.go("app.creacionEncuesta");
@@ -429,6 +464,7 @@ angular.module('starter.controllers', [])
               }
             }else{
               console.warn("no hay encuesta disponible");
+              $rootScope.sinEncuesta = 1;
             }
           });
         }
@@ -529,7 +565,8 @@ angular.module('starter.controllers', [])
 
 .controller('creacionEncuestaCtrl', function($scope, createNode,storage,$ionicPlatform,$rootScope,$state) {
 
-  $ionicPlatform.ready(function() {
+  var GetAndCreateEncuesta = function() {
+    console.warn("Se activa encuesta (creación)");
     var _unidad = storage.unidad();
     var _url = storage.url();
     if(_url != "nada"){
@@ -666,6 +703,7 @@ angular.module('starter.controllers', [])
                   }
                 }
               }
+              console.log("Se redirecciona a la encuesta");
               $state.go("app.encuesta");
             });
           }
@@ -675,10 +713,11 @@ angular.module('starter.controllers', [])
         }
       });
     }
+  };
 
-  });
-
-
+  $scope.$on( "$ionicView.enter", function( ) {
+    GetAndCreateEncuesta();
+  })
 
 })
 
@@ -690,14 +729,12 @@ angular.module('starter.controllers', [])
       console.log("respuesta1");
       console.log($scope.respuesta1);
     }
-
     $scope.pushRespuesta2 = function (){
       var form = this;
       $scope.respuesta2 = form.respuesta2;
       console.log("respuesta2");
       console.log($scope.respuesta2);
     }
-
     $scope.pushRespuesta3 = function (){
       var form = this;
       $scope.respuesta3 = form.respuesta3;
@@ -747,10 +784,7 @@ angular.module('starter.controllers', [])
       console.log($scope.respuesta10);
     }
 
-
-
     $scope.createEncuesta = function() {
-
       console.log("formulario:");
       console.log("pregunta 1:");
       console.log($rootScope.pregunta1);
@@ -999,6 +1033,17 @@ angular.module('starter.controllers', [])
     }
 
     $scope.$on( "$ionicView.enter", function( ) {
+      var estadoEncuesta = storage.verificarEncuestaRespondida();
+      if(estadoEncuesta == true){
+        navigator.notification.alert(
+          'No existen encuestas disponibles',  // message
+          back(),         // callback
+          'Aviso',            // title
+          'Ok'                  // buttonName
+        );
+      }else if(estadoEncuesta == false){
+        console.log("Encuesta disponible a responder");
+      }
       if($rootScope.sinEncuesta == 1){
         navigator.notification.alert(
           'No existen encuestas disponibles',  // message
